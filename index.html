@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+        display:flex; justify-content:center; align-items:center;
+        width:100%; height:100vh;
+        font-size:5vw;
+    }
+
+    #load{
+        position:fixed;
+        top:50%;left:50%;
+        padding:.5em 1em;
+        transform:translate(-50%,-50%);
+        background:rgba(0,0,0,.5); color:#fff;
+        backdrop-filter:blur(10px);
+        animation: loading .5s linear infinite alternate;
+        transition:all 1s;
+    }
+    #load.off{
+        top:0;
+        transform:translate(-50%,-100%);
+    }
+
+    @keyframes loading {
+        to{padding:.5em .5em;}
+    }
+</style>
+</head>
+<body>
+    
+    <div id="load">LOADING</div>
+    <div id="result">3초 뒤에 내용 로딩할꼬야</div>
+
+
+<script>
+    const change_result = new Promise((res,rej) => {
+        setTimeout(()=>{ 
+            res('✨changed text...');
+            rej(new Error('실패'));
+        },3000);
+    });
+
+    change_result
+    .then((res)=>{
+        const $result = document.getElementById('result');
+        $result.textContent = res;
+    })
+    .catch((rej)=>{
+        console.log(rej);
+    })
+    .finally(()=>{
+        const $load = document.getElementById('load');
+        $load.classList.add('off');
+    });
+</script>
+</body>
+</html>
